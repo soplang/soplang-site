@@ -23,8 +23,8 @@ output are in Somali:
 
 ```text
 $ soplang
-Soplang 3.0.0 — Luuqadda barnaamijka ee Soomaaliyeed.
-  /caawi  = caawimo   /bixi = bixi   /akhrifayl <fayl> = akhri oo orod
+Soplang 3.0.1: Luuqadda barnaamijyada ee Af-Soomaaliga.
+  /caawi  = caawimo   /bixi = bixi   /akhrifayl <fayl> = akhri oo fuli
   Ctrl+D ama /bixi = bixi
 ```
 
@@ -68,7 +68,7 @@ soplang --build hello.sop -o hello
 | `-q, --quiet` | Hide the build message |
 
 <Callout title="Native build toolchain">
-  Official v3.0.0 packages require Rust 1.94.0, clang 15+, and the platform linker/SDK for `--build`. Keep the complete package together. Installed `--build` does not invoke Cargo. JIT execution and the REPL need neither Rust nor clang. See the [installation guide](/docs/00_installation#building-standalone-programs).
+  Official v3.0.1 packages require Rust 1.94.0, clang 15+, and the platform linker/SDK for `--build`. Keep the complete package together. Installed `--build` does not invoke Cargo. JIT execution and the REPL need neither Rust nor clang. See the [installation guide](/docs/00_installation#building-standalone-programs).
 </Callout>
 
 ## Strict Mode – `--strict`
@@ -105,3 +105,42 @@ Khalad nooc: 'x' waa dynamic laakiin 'strict mode' waa shidan yahay [E022] safka
 | `--no-color` | Disable diagnostic colors; also supported through `NO_COLOR=1` |
 | `-V, --version` | Show the version |
 | `-h, --help` | Show help |
+
+## Help and Diagnostic Language
+
+Run `soplang --help` for the complete help screen. Soplang 3.0.1 uses Somali
+for descriptions, generated argument errors, headings such as `Adeegsiga:`
+and `Xulashooyinka:`, and value placeholders. Option spellings remain the same.
+Help and version requests write to stdout and exit with status 0. Invalid
+arguments write to stderr and exit with status 2.
+
+`--hir` labels the top-level section `--- qaybta guud ---`; AST and HIR
+instructions retain their compiler notation.
+
+File, console, compiler, and toolchain failures receive Somali explanations.
+For example, running a missing file produces:
+
+```text
+Khalad fulin: Faylka 'magac.sop' lama helin.
+```
+
+Set `SOPLANG_ERROR_DETAILS=1` to include the original external tool or operating
+system error under `Faahfaahin farsamo:` on stderr. These troubleshooting
+details can be English; normal explanations are Somali. Tool names, paths,
+version identifiers, and error codes remain literal.
+
+```sh
+SOPLANG_ERROR_DETAILS=1 soplang --build hello.sop -o hello
+```
+
+In PowerShell:
+
+```powershell
+$env:SOPLANG_ERROR_DETAILS = '1'
+soplang --build hello.sop -o hello.exe
+Remove-Item Env:SOPLANG_ERROR_DETAILS
+```
+
+Unset the variable or give it another value to return to normal explanations.
+Caught runtime errors retain their Somali message in both modes. See
+[error handling](/docs/17_error-handling) for source locations and exit status.

@@ -3,6 +3,7 @@ import { JsonLd, breadcrumbSchema, softwareSchema } from "@/components/JsonLd";
 import CodeWindow from "@/components/SoplangCodeWindow";
 import { assetLabel, createPlatforms } from "@/constants/installData";
 import { GITHUB_URL, getLatestRelease, getReleases } from "@/lib/github";
+import { checksumCommands } from "@/lib/releases";
 import { Icon } from "@iconify/react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -26,6 +27,7 @@ function formatDate(value: string | null): string {
 export default async function DownloadsPage() {
   const [release, releases] = await Promise.all([getLatestRelease(), getReleases()]);
   const platforms = createPlatforms(release);
+  const checksums = checksumCommands(release);
   const checksum = release.assets.find((asset) => asset.name === "SHA256SUMS");
 
   return (
@@ -79,8 +81,8 @@ export default async function DownloadsPage() {
           <h2 id="checksums-heading" className="type-section">Verify your download</h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">{checksum ? <a href={checksum.url} className="font-semibold text-primary hover:underline">Download SHA256SUMS</a> : <a href={release.url} className="font-semibold text-primary hover:underline">Open the release checksums</a>} and compare the SHA-256 hash for your package with its entry. The manifest covers all platforms; you only need the entry for the file you downloaded.</p>
           <div className="mt-6 grid min-w-0 gap-4 lg:grid-cols-2">
-            <CodeWindow title="PowerShell" code={'Get-FileHash .\\soplang-setup.exe -Algorithm SHA256'} />
-            <CodeWindow title="Linux / macOS" code={`# Linux: Debian package\nsha256sum soplang_3.0.0_amd64.deb\n\n# macOS: Apple Silicon archive\nshasum -a 256 soplang-3.0.0-macos-arm64.tar.gz`} />
+            <CodeWindow title="PowerShell" code={checksums.windows} />
+            <CodeWindow title="Linux / macOS" code={checksums.unix} />
           </div>
         </div>
       </section>
@@ -104,7 +106,7 @@ export default async function DownloadsPage() {
           </div>
           <div className="min-w-0">
             <p className="eyebrow">Build</p><h2 className="type-section mt-3">A standalone executable</h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground"><code>--build</code> uses LLVM IR, clang 15+, a platform linker/SDK and the exact Rust compiler used for your package (Rust 1.94.0 for v3.0.0). Read <code className="break-all">lib/soplang/rustc-version.txt</code> in the package. Installed builds do not invoke Cargo.</p>
+            <p className="mt-4 leading-relaxed text-muted-foreground"><code>--build</code> uses LLVM IR, clang 15+, a platform linker/SDK and the exact Rust compiler used for your package (Rust 1.94.0 for v3.0.1). Read <code className="break-all">lib/soplang/rustc-version.txt</code> in the package. Installed builds do not invoke Cargo.</p>
             <CodeWindow title="Terminal" code={`soplang --build hello.sop -o hello\n./hello`} />
             <p className="text-sm leading-relaxed text-muted-foreground">On Windows, use <code>-o hello.exe</code> and run <code>.\hello.exe</code> in PowerShell. The executable runs on its target platform without Soplang or the original source files. The Docker image includes the build toolchain.</p>
             <Link href="/docs/00_installation#building-standalone-programs" className="mt-4 inline-flex font-semibold text-primary hover:underline">Native build setup</Link>

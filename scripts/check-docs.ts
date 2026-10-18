@@ -2,11 +2,15 @@ import { readdirSync, readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSyn
 import { spawnSync } from "node:child_process";
 import { join, resolve, dirname } from "node:path";
 import { tmpdir } from "node:os";
+import { latestVersion } from "../constants/latestVersion";
 
 // Run against the released compiler, with its matching Rust/clang build toolchain.
 const compiler = resolve(process.argv[2] ?? process.env.SOPLANG_BIN ?? "../soplang/target/release/soplang");
 const version = spawnSync(compiler, ["--version"], { encoding: "utf8" });
-if (version.status !== 0 || !version.stdout.includes("3.0.0")) throw new Error("Provide a Soplang 3.0.0 compiler path.");
+const expectedVersion = `soplang ${latestVersion.replace(/^v/, "")}`;
+if (version.status !== 0 || version.stdout.trim() !== expectedVersion) {
+  throw new Error(`Expected ${expectedVersion}; provide the matching released compiler path.`);
+}
 type Example = { page: string; title: string; code: string };
 const examples: Example[] = [];
 for (const file of readdirSync("content/docs").filter((name) => name.endsWith(".mdx")).sort()) {

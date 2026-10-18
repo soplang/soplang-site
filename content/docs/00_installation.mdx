@@ -3,7 +3,7 @@ title: Installing Soplang 3
 description: "Official Soplang 3 packages, platform requirements, checksums, Docker and the LLVM native build toolchain."
 ---
 
-[Soplang 3.0.0](https://github.com/soplang/soplang/releases/tag/v3.0.0) is available
+[Soplang 3.0.1](https://github.com/soplang/soplang/releases/tag/v3.0.1) is available
 for Linux x86_64, Windows x64, and macOS Apple Silicon. A Linux amd64 Docker
 image includes the compiler and its native build toolchain.
 
@@ -13,15 +13,15 @@ Download the package for your platform and the release's combined `SHA256SUMS`.
 
 | Platform | Package | Requirements |
 | --- | --- | --- |
-| Linux x86_64 | `soplang_3.0.0_amd64.deb` or `soplang-3.0.0-linux-x86_64.tar.gz` | glibc 2.39 or later; libgcc |
-| Windows x64 | `soplang-setup.exe` or `soplang-3.0.0-windows-AMD64.zip` | Native Windows x64 environment |
-| macOS Apple Silicon | `soplang-3.0.0-macos-arm64.tar.gz` | The app bundle declares macOS 14.8.9 or later |
+| Linux x86_64 | `soplang_3.0.1_amd64.deb` or `soplang-3.0.1-linux-x86_64.tar.gz` | glibc 2.39 or later; libgcc |
+| Windows x64 | `soplang-setup.exe` or `soplang-3.0.1-windows-AMD64.zip` | Native Windows x64 environment |
+| macOS Apple Silicon | `soplang-3.0.1-macos-arm64.tar.gz` | The app bundle declares macOS 14.8.9 or later |
 
 The Windows installer is unsigned; the macOS archive is not notarized.
 This release provides archives and a Debian package; RPM and DMG assets are
-not attached to v3.0.0. The macOS builder can optionally generate a DMG locally.
+not attached to v3.0.1. The macOS builder can optionally generate a DMG locally.
 
-All native platforms passed the [release verification gates](https://github.com/soplang/soplang/blob/v3.0.0/docs/testing/RELEASE_VERIFICATION.md).
+All native platforms passed the [release verification gates](https://github.com/soplang/soplang/actions/runs/39123589977).
 
 ### Verify downloads
 
@@ -44,14 +44,14 @@ line in `SHA256SUMS`. The manifest covers packages for all platforms.
 Install the Debian package:
 
 ```sh
-sudo dpkg -i soplang_3.0.0_amd64.deb
+sudo dpkg -i soplang_3.0.1_amd64.deb
 soplang --version
 ```
 
 Or extract the archive:
 
 ```sh
-tar -xzf soplang-3.0.0-linux-x86_64.tar.gz
+tar -xzf soplang-3.0.1-linux-x86_64.tar.gz
 ./soplang/soplang --version
 ```
 
@@ -77,25 +77,25 @@ Alternatively, extract the ZIP and run `soplang.exe` inside the extracted
 Extract the Apple Silicon archive:
 
 ```sh
-tar -xzf soplang-3.0.0-macos-arm64.tar.gz
+tar -xzf soplang-3.0.1-macos-arm64.tar.gz
 ./Soplang.app/Contents/MacOS/soplang --version
 ```
 
 This is a command-line application. Keep the complete app bundle and add its
 `Contents/MacOS` directory to PATH if desired. Intel Mac packages are not part
-of this release; [build from source](https://github.com/soplang/soplang/blob/v3.0.0/docs/BUILD_GUIDE.md) for other targets.
+of this release; [build from source](https://github.com/soplang/soplang/blob/v3.0.1/docs/BUILD_GUIDE.md) for other targets.
 
 ## Docker
 
 The public image is available from Docker Hub:
 
 ```sh
-docker run --platform linux/amd64 --rm soplang/soplang:3.0.0 --version
-docker run --platform linux/amd64 --rm -v "$PWD:/scripts:ro" soplang/soplang:3.0.0 program.sop
-docker run --platform linux/amd64 -it --rm soplang/soplang:3.0.0
+docker run --platform linux/amd64 --rm soplang/soplang:3.0.1 --version
+docker run --platform linux/amd64 --rm -v "$PWD:/scripts:ro" soplang/soplang:3.0.1 program.sop
+docker run --platform linux/amd64 -it --rm soplang/soplang:3.0.1
 ```
 
-See [Docker usage](https://github.com/soplang/soplang/blob/v3.0.0/docs/docker.md) for native builds, writable mounts, and registry
+See [Docker usage](https://github.com/soplang/soplang/blob/v3.0.1/docs/docker.md) for native builds, writable mounts, and registry
 availability.
 
 ## Run programs and build executables
@@ -109,13 +109,13 @@ soplang --build program.sop -o program
 
 JIT execution and the REPL do not need Rust or clang. Native `--build` requires
 clang, a platform linker/SDK, and the exact Rust toolchain recorded in the
-package. Official v3.0.0 packages use Rust 1.94.0. See
+package. Official v3.0.1 packages use Rust 1.94.0. See
 [installed build requirements](#building-standalone-programs) before building programs.
 The Docker image includes these tools.
 
-To build the compiler itself, follow the [source build guide](https://github.com/soplang/soplang/blob/v3.0.0/docs/BUILD_GUIDE.md).
+To build the compiler itself, follow the [source build guide](https://github.com/soplang/soplang/blob/v3.0.1/docs/BUILD_GUIDE.md).
 For language examples and source diagnostics, start with the
-[example catalog](https://github.com/soplang/soplang/blob/v3.0.0/examples/README.md) and [language reference](/docs/14_keywords-reference).
+[example catalog](https://github.com/soplang/soplang/blob/v3.0.1/examples/README.md) and [language reference](/docs/14_keywords-reference).
 
 ## Building standalone programs
 
@@ -124,7 +124,7 @@ beside the executable, or `../lib/soplang` for a Unix `bin` directory. It uses
 LLVM IR, clang 15+ with opaque pointers, and the exact Rust compiler recorded in
 `lib/soplang/rustc-version.txt`. Installed builds do not invoke Cargo.
 
-For official v3.0.0 packages, install and select Rust 1.94.0 in your project:
+For official v3.0.1 packages, install and select Rust 1.94.0 in your project:
 
 ```sh
 rustup toolchain install 1.94.0 --profile minimal
@@ -154,7 +154,7 @@ With rustup installed, build the release rather than an unpinned development
 revision:
 
 ```sh
-git clone --branch v3.0.0 --depth 1 https://github.com/soplang/soplang.git
+git clone --branch v3.0.1 --depth 1 https://github.com/soplang/soplang.git
 cd soplang
 rustup toolchain install 1.94.0 --profile minimal
 cargo +1.94.0 build --release
@@ -162,5 +162,5 @@ cargo +1.94.0 build --release
 ```
 
 Keep the checkout and its build artifacts together, or use the repository's
-[packaging guide](https://github.com/soplang/soplang/blob/v3.0.0/docs/BUILD_GUIDE.md)
+[packaging guide](https://github.com/soplang/soplang/blob/v3.0.1/docs/BUILD_GUIDE.md)
 to distribute a complete package with its matching runtime libraries.

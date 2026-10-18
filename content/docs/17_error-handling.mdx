@@ -115,9 +115,20 @@ Some diagnostics include a short code:
 ## Source Context and Exit Status
 
 Uncaught failures write Somali diagnostics to stderr and exit with status 1.
-Diagnostics include the source file, line, column, source line and caret. Columns
+Source diagnostics include the source file, line, column, source line and caret.
+Infrastructure errors without a source location omit line and column numbers. Columns
 count Unicode scalar values; caret spacing accounts for tabs, combining marks
 and wide characters. Imported files retain their own source context. LLVM-built
 executables retain relevant source lines even when the original files are gone.
 Caught errors are message strings, not structured error objects or stack traces.
 `fasax` remains a compatible try spelling; new examples use `tijaabi`.
+
+CLI argument errors, such as unknown flags or missing values, use Somali
+explanations and exit with status 2. `--help` and `--version` exit with status 0.
+File and tool failures retain exit status 1.
+
+Set `SOPLANG_ERROR_DETAILS=1` to include original external tool or OS messages
+under `Faahfaahin farsamo:` on stderr. These optional details can be English.
+They are separate from the primary diagnostic and never become part of the
+message string received by `qabo`. The setting also works in LLVM-built
+executables; their normal runtime error messages remain Somali.

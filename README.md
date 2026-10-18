@@ -25,7 +25,7 @@ bun run lint
 bun run build
 ```
 
-To verify documentation examples, build Soplang 3.0.0 with its native build
+To verify documentation examples, build Soplang 3.0.1 with its native build
 toolchain, then provide the compiler path:
 
 ```sh
@@ -41,8 +41,8 @@ Soplang runtime package or source build artifacts.
 
 ## Documentation
 
-Docs target **Soplang 3.0.0**. Check behavior against the released compiler and
-its [language reference](https://github.com/soplang/soplang/blob/v3.0.0/docs/language/keywords.md).
+Docs target **Soplang 3.0.1**. Check behavior against the released compiler and
+its [language reference](https://github.com/soplang/soplang/blob/v3.0.1/docs/language/keywords.md).
 Use preferred names in tutorials: `kale`, `tijaabi`, `dhis`, `maran`, `geli`,
 `midee`, `saar`, `hel`, `hore`, `dambe`, `weynee` and `yaree`. Keep supported
 earlier spellings in the reference and migration guide, with their actual

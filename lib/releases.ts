@@ -24,15 +24,15 @@ export const currentRelease: Release = {
   tag: latestVersion,
   name: `Soplang ${latestVersion}`,
   url: `https://github.com/soplang/soplang/releases/tag/${latestVersion}`,
-  publishedAt: "2026-10-17T02:54:31Z",
+  publishedAt: "2026-10-18T11:40:49Z",
   prerelease: false,
   assets: [
     ["SHA256SUMS", 471],
-    ["soplang-3.0.0-linux-x86_64.tar.gz", 43552148],
-    ["soplang-3.0.0-macos-arm64.tar.gz", 38563269],
-    ["soplang-3.0.0-windows-AMD64.zip", 48635748],
-    ["soplang-setup.exe", 30867375],
-    ["soplang_3.0.0_amd64.deb", 32750436],
+    ["soplang-3.0.1-linux-x86_64.tar.gz", 43567789],
+    ["soplang-3.0.1-macos-arm64.tar.gz", 38581831],
+    ["soplang-3.0.1-windows-AMD64.zip", 48672808],
+    ["soplang-setup.exe", 30854321],
+    ["soplang_3.0.1_amd64.deb", 32785546],
   ].map(([name, size]) => ({
     name: String(name), size: Number(size), downloads: 0,
     url: `https://github.com/soplang/soplang/releases/download/${latestVersion}/${name}`,
@@ -54,5 +54,31 @@ export function mapRelease(release: ApiRelease): Release {
 }
 
 export function stableRelease(release: ApiRelease | null): Release {
-  return release && !release.draft && !release.prerelease ? mapRelease(release) : currentRelease;
+  if (!release || release.draft || release.prerelease) return currentRelease;
+  // An older cached API response must not undo a verified site release update.
+  const parts = (tag: string) => /^v?(\d+)\.(\d+)\.(\d+)$/.exec(tag)?.slice(1).map(Number);
+  const remote = parts(release.tag_name);
+  const snapshot = parts(currentRelease.tag);
+  if (!remote || !snapshot) return currentRelease;
+  for (let index = 0; index < 3; index++) {
+    if (remote[index] < snapshot[index]) return currentRelease;
+    if (remote[index] > snapshot[index]) return mapRelease(release);
+  }
+  return mapRelease(release);
+}
+
+// Use actual asset names so a newly published release cannot show old checksum commands.
+export function checksumCommands(release: Release): { windows: string; unix: string } {
+  const windows = release.assets.find((asset) => asset.name === "soplang-setup.exe")
+    ?? release.assets.find((asset) => /windows-AMD64\.zip$/i.test(asset.name));
+  const linux = release.assets.find((asset) => /_amd64\.deb$/i.test(asset.name))
+    ?? release.assets.find((asset) => /linux-x86_64\.tar\.gz$/i.test(asset.name));
+  const macos = release.assets.find((asset) => /macos-arm64\.tar\.gz$/i.test(asset.name));
+  return {
+    windows: windows ? `Get-FileHash .\\${windows.name} -Algorithm SHA256` : "# No Windows package is attached to this release.",
+    unix: [
+      linux && `# Linux\nsha256sum ${linux.name}`,
+      macos && `# macOS: Apple Silicon\nshasum -a 256 ${macos.name}`,
+    ].filter(Boolean).join("\n\n") || "# See the release for available packages.",
+  };
 }
