@@ -42,6 +42,7 @@ export default async function DownloadsPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href={release.url} className="btn-ghost">Release notes</a>
+            <a href="https://www.somast.so/en/blog/soplang-3-6-release" className="btn-ghost">Release article</a>
             <Link href="/docs/21_soplang-3-6" className="btn-ghost">What&apos;s new in 3.6</Link>
           </div>
         </div>

@@ -1,0 +1,53 @@
+---
+title: VS Code extension
+description: "Set up Soplang 3.6 analysis, schema editing, and compiler tasks in Visual Studio Code."
+---
+
+# VS Code extension
+
+The [Soplang extension](https://github.com/soplang/vsCodeLanguageSupport) adds
+syntax highlighting, snippets, diagnostics, completion, navigation, formatting,
+and Run, Build, and REPL commands. Its 3.6 update uses the installed Soplang
+compiler's language server for current language and `schema.sop` analysis.
+
+## Install Soplang first
+
+Install the [3.6 package for your platform](/downloads) on the same machine where
+VS Code runs its workspace extension host. In SSH, WSL, and container workspaces,
+that means the remote environment. Check the executable there:
+
+```sh
+soplang nooc
+```
+
+Set `soplang.compilerPath` in VS Code if the executable is not on `PATH`:
+
+```json
+{
+  "soplang.compilerPath": "/path/to/soplang"
+}
+```
+
+The extension does not download the compiler. The official 3.6 packages include
+the LLVM generator, linker, and runtime needed by the Build command; building a
+Soplang program does not require a separate Rust or Clang installation.
+
+## What the editor provides
+
+The installed compiler analyzes source without executing it. The editor uses
+unsaved buffers for diagnostics and navigation. `schema.sop` gets its own
+highlighting, snippet, completion, hover, formatting, and schema diagnostics.
+Native definitions can open read-only source references from the installed
+compiler. The Run and Build commands execute a saved source file in a terminal;
+Open REPL starts `soplang isdhexgal`.
+
+Syntax highlighting and snippets work without a compiler. When a 3.6 compiler
+cannot be found, the extension can use its bundled 3.0 analysis server for
+older source. Install Soplang 3.6 for current file, network, task, web, and data
+API analysis. Workspace Trust is required to start the compiler or a custom
+analysis server.
+
+A source debugger and debug adapter are not included in the extension. See the
+[extension support matrix](https://github.com/soplang/vsCodeLanguageSupport/blob/main/docs/SUPPORT.md)
+for its exact limits and the [3.6 overview](/docs/21_soplang-3-6) for language
+capabilities.

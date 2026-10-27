@@ -25,6 +25,7 @@
     "19_cli-and-repl",
     "20_migrating-to-v3",
     "21_soplang-3-6",
+    "22_vscode-extension",
     "faq"
   ]
 }
