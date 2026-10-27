@@ -25,8 +25,8 @@ bun run lint
 bun run build
 ```
 
-To verify documentation examples, build Soplang 3.0.1 with its native build
-toolchain, then provide the compiler path:
+To verify documentation examples, install Soplang 3.6.0 with its bundled
+native build components, then provide the compiler path:
 
 ```sh
 bun run docs:check /absolute/path/to/soplang
@@ -36,13 +36,13 @@ The checker executes every Soplang code window through Cranelift JIT and LLVM,
 compares backend output, checks documented output comments, and validates the
 error codes of intentional failures. It supplies input for interactive examples
 and materializes the helper files shown in import examples. LLVM verification
-needs clang, a platform linker/SDK, the matching Rust compiler, and the complete
-Soplang runtime package or source build artifacts.
+needs the complete 3.6 package, including its bundled runtime and linker. Source
+checkouts need their own build dependencies.
 
 ## Documentation
 
-Docs target **Soplang 3.0.1**. Check behavior against the released compiler and
-its [language reference](https://github.com/soplang/soplang/blob/v3.0.1/docs/language/keywords.md).
+Docs target **Soplang 3.6.0**. Check behavior against the released compiler and
+its [language reference](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/keywords.md).
 Use preferred names in tutorials: `kale`, `tijaabi`, `dhis`, `maran`, `geli`,
 `midee`, `saar`, `hel`, `hore`, `dambe`, `weynee` and `yaree`. Keep supported
 earlier spellings in the reference and migration guide, with their actual

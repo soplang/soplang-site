@@ -11,7 +11,7 @@ Soplang is the Somali programming language. Its keywords and built-ins are in So
 
 ### How does Soplang run my code?
 
-Soplang is implemented in Rust. `soplang file.sop` compiles your program with a Cranelift JIT and runs it immediately. `soplang --build file.sop -o app` emits LLVM IR and links a standalone native binary with clang and the matching rustc. Installed JIT execution and the REPL need no Rust or clang; native builds need the toolchain documented in the installation guide. See [CLI & REPL](/docs/19_cli-and-repl).
+Soplang is implemented in Rust. `soplang fuli file.sop` runs a program with the Cranelift JIT. `soplang dhis file.sop -o app` builds a standalone native program using bundled LLVM, a platform linker, and the Soplang runtime. Official 3.6 packages do not require a separate Rust or Clang installation to run or build programs. See [CLI & REPL](/docs/19_cli-and-repl).
 
 ### Is it open source?
 
@@ -35,7 +35,7 @@ Yes. Classes are defined with `qaab`, created with `cusub`, can inherit with `dh
 
 ### Can I handle errors?
 
-Yes, with `tijaabi { ... } qabo (khalad) { ... }`. See [Error Handling](/docs/17_error-handling).
+Yes. Use `tuur` to raise an error, `tijaabi`/`qabo` to catch it, and `dhammee` for guaranteed cleanup. See [Error Handling](/docs/17_error-handling).
 
 ### Can I split my program into multiple files?
 
@@ -47,7 +47,7 @@ No. Semicolons are optional statement separators. Both `door x = 1` on its own l
 
 ### Does Soplang have string interpolation?
 
-No. Join values with `+`: `qor("Da'da: " + da)`.
+Yes. `qor(f"Da'da: {da}")` interpolates a value; `+` also joins strings.
 
 ## Community & Support
 

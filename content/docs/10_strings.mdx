@@ -6,9 +6,25 @@ description: "Soplang strings: Unicode indexing, slicing, search, trimming, repl
 import SoplangCodeWindow from "../../components/SoplangCodeWindow";
 
 A string (`qoraal`) is a sequence of Unicode characters. Use double quotes
-(`"..."`) or single quotes (`'...'`). String interpolation and escape sequences
-are not supported; use `+` to join values. String methods return new values
+(`"..."`) or single quotes (`'...'`). Plain strings preserve backslashes. Prefix a string with `e` to decode escapes
+or with `f` to interpolate expressions. Triple quotes allow multiline text. String methods return new values
 without changing the original string.
+
+## Escapes and interpolation
+
+<SoplangCodeWindow title="string_forms.sop" code={`door magac = "Ayaan"
+qor(f"Salaan, {magac}!")
+qor(e"safka koowaad\\nsafka labaad")
+door qoraalka = """safka koowaad
+safka labaad"""
+qor(qoraalka)`}/>
+
+An `r` prefix explicitly requests raw text. Plain strings also preserve
+backslashes for compatibility. `e` strings decode escapes, including Unicode
+escapes. `f` strings evaluate expressions inside `{...}` and accept format
+specifiers. See the [language reference](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/grammar.md)
+for the literal syntax and [text methods](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/text-methods.md)
+for string operations.
 
 ## Creation, Length, and Indexing
 

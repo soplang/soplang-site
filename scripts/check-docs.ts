@@ -4,7 +4,7 @@ import { join, resolve, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { latestVersion } from "../constants/latestVersion";
 
-// Run against the released compiler, with its matching Rust/clang build toolchain.
+// Run against the released compiler with its complete native runtime package.
 const compiler = resolve(process.argv[2] ?? process.env.SOPLANG_BIN ?? "../soplang/target/release/soplang");
 const version = spawnSync(compiler, ["--version"], { encoding: "utf8" });
 const expectedVersion = `soplang ${latestVersion.replace(/^v/, "")}`;

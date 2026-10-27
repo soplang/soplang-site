@@ -31,7 +31,7 @@ tijaabi {
 
 qor("Barnaamijku wuu sii socdaa")`}/>
 
-- `qabo` is required: every `tijaabi` block must have a `qabo (name)` block.
+- A `tijaabi` block needs `qabo`, `dhammee`, or both.
 - If no error occurs, the `qabo` block is skipped.
 - Try blocks can be nested. The nearest enclosing `qabo` catches an error.
 
@@ -50,22 +50,26 @@ qor("Barnaamijku wuu sii socdaa")`}/>
   `tijaabi` catches errors from built-ins, methods, callbacks, and division by zero. A callback error stops iteration and propagates to the nearest `qabo`. Lexer, parser, and analysis errors occur before execution and cannot be caught this way.
 </Callout>
 
-## Signalling Failure from a Function
+## Raising errors and cleanup
 
-Soplang does not have a `throw` keyword. A function can return `maran` to
-signal failure, leaving the caller to check the result:
+`tuur` raises a string or a structured `khalad` value. The first `qabo`
+binding receives the message; an optional second binding receives the error
+with `.fariin`, `.summad`, and `.sabab` fields. `dhammee` runs when the
+protected block exits, including after an error or return.
 
-<SoplangCodeWindow title="return_maran.sop" code={`hawl hubi_da(da) {
-    haddii (da < 0) {
-        celi maran
-    }
-    celi da
-}
-
-door natiijo = hubi_da(-5)
-haddii (natiijo == maran) {
-    qor("Da' khaldan")
+<SoplangCodeWindow title="raise_cleanup.sop" code={`tijaabi {
+    tuur khalad("Xogtu ma dhammaystirna", "XOG001")
+} qabo (fariin, xog) {
+    qor(fariin, xog.summad)
+} dhammee {
+    qor("Hawshii waa dhammaatay")
 }`}/>
+
+The `khalad(fariin, summad?, sabab?)` constructor creates an error value
+without raising it. Errors can be chained through `.sabab`. An uncaught error
+includes a source location and call trace. See the
+[language reference](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/keywords.md#structured-errors)
+for rethrowing and cleanup rules.
 
 ## Error Messages
 

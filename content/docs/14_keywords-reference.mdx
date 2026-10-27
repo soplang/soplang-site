@@ -1,15 +1,15 @@
 ---
 title: Soplang 3 Language Reference
-description: "The Soplang 3.0.0 reference: Somali keywords, types, functions, collection methods, classes, closures and compatibility names."
+description: "The Soplang 3.6 reference: Somali keywords, types, functions, collection methods, classes, closures and compatibility names."
 ---
 
 import SoplangCodeWindow from "../../components/SoplangCodeWindow";
 
-This reference targets **Soplang 3.0.0**. Prefer the canonical names in new programs; supported earlier spellings are listed under Compatibility spellings.
+This reference targets **Soplang 3.6.0**. Prefer the canonical names in new programs; supported earlier spellings are listed under Compatibility spellings.
 
-This document provides a reference for all keywords in the Soplang programming language, along with their meanings and examples of usage.
+This page covers the core syntax and collection API. The [full language reference](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/keywords.md) also covers the 3.6 file, network, task, web, and data APIs.
 
-The [terminology review](https://github.com/soplang/soplang/blob/v3.0.0/docs/language/terminology.md) records current names, source evidence,
+The [terminology review](https://github.com/soplang/soplang/blob/v3.6.0/docs/language/terminology.md) records current names, source evidence,
 and naming decisions. This reference uses implemented canonical spellings;
 compatibility names are listed below. The collection design record explains shared operation contracts.
 
@@ -25,6 +25,8 @@ compatibility names are listed below. The collection design record explains shar
 | `bool`   | Boolean type                  | `bool`             | `bool waaRun = run`                    |
 | `walax`  | Object type                   | `object`           | `walax person = { name: "Sharafdin" }` |
 | `teed`   | List/array type               | `array`            | `teed numbers = [1, 2, 3]`             |
+| `xirmo` | Immutable tuple type | `tuple` | `xirmo row = xirmo(1, "Ayaan")` |
+| `urur` | Set type | `set` | `urur items = urur(1, 2)` |
 | `maran`  | Null value                    | `null`             | `door a = maran`                       |
 
 ## Control Flow Keywords
@@ -402,7 +404,9 @@ Notes:
 | --------- | ---------- | ---------- | ---------- |
 | `keen`  | Import another `.sop` file       | `import` | `keen "lib.sop"`                          |
 | `tijaabi` | Start a protected try block      | `try`    | `tijaabi { ... } qabo (e) { ... }`          |
-| `qabo`  | Catch block with error variable  | `catch`  | `qabo (khalad) { qor(khalad) }`           |
+| `qabo`  | Catch block with error variable  | `catch`  | `qabo (fariin) { qor(fariin) }`           |
+| `tuur` | Raise a string or structured error | `raise` | `tuur "Xog ma jirto"` |
+| `dhammee` | Guaranteed cleanup | `finally` | `tijaabi { ... } dhammee { ... }` |
 
 **Import example:**
 
@@ -422,7 +426,7 @@ Imported files are resolved relative to the current file's directory. Top-level 
     qor("Qabtay: " + khalad)
 }`}/>
 
-Runtime errors inside the `tijaabi` block are caught; the error message is bound to the variable in `qabo (...)`.
+Runtime errors inside the `tijaabi` block are caught; the first `qabo` variable receives the message. An optional second variable receives a structured error. `tuur` raises an error, and `dhammee` runs on exit. See [error handling](/docs/17_error-handling).
 
 ## Compatibility spellings
 

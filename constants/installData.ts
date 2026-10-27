@@ -24,7 +24,7 @@ export function assetLabel(asset: ReleaseAsset): string {
 export function createPlatforms(release: Release): Platform[] {
   const docker = (windows = false): InstallMethod => ({
     name: "Docker",
-    description: "Linux amd64 image with Rust and clang included. Docker Desktop can emulate it on Apple Silicon.",
+    description: "Linux amd64 image with the compiler and native build support. Docker Desktop can emulate it on Apple Silicon.",
     command: `docker run --platform linux/amd64 -it --rm soplang/soplang:${release.tag.replace(/^v/, "")}\n\n# Run hello.sop from the current folder\ndocker run --platform linux/amd64 --rm -v "${windows ? "${PWD}" : "$PWD"}:/scripts:ro" soplang/soplang:${release.tag.replace(/^v/, "")} hello.sop`,
   });
   const platforms: Platform[] = [
@@ -32,7 +32,7 @@ export function createPlatforms(release: Release): Platform[] {
       requirements: ["x64 (AMD64)"], notes: "The installer is unsigned. Open a new terminal after installation to use PATH changes.",
       assetPattern: /(?:^soplang-setup\.exe$|windows-AMD64\.zip$)/i, install: [] },
     { id: "macos", name: "macOS", icon: "fa6-brands:apple",
-      requirements: ["Apple Silicon (ARM64)", "macOS 14.8.9+"], notes: "Command-line app bundle, not notarized. Keep the complete Soplang.app bundle together.",
+      requirements: ["Apple Silicon (ARM64)", "macOS 15.7.9+"], notes: "Command-line app bundle, not notarized. Keep the complete Soplang.app bundle together.",
       assetPattern: /macos-arm64\.tar\.gz$/i, install: [] },
     { id: "linux", name: "Linux", icon: "fa6-brands:linux",
       requirements: ["x86_64 (amd64)", "glibc 2.39+", "libgcc"], notes: "Debian package or tar archive. Keep the archive's soplang executable and lib directory together.",

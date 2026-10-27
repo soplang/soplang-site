@@ -49,7 +49,7 @@ qor("Faallooyinka lama fuliyo")  // Comment: an end-of-line comment`}/>
 - **Blocks:** `{}` enclose the bodies of conditionals, loops, functions, and classes. Indentation improves readability but does not define blocks.
 - **Conditions:** `haddii`, `intay`, and `dooro` require parentheses `()` around their condition or expression.
 - **Case sensitivity:** `magac` and `Magac` are different variable names.
-- **Strings:** use double quotes (`"..."`) or single quotes (`'...'`). Escape sequences and string interpolation are not supported; `"\n"` prints literally. Use `+` to join values.
+- **Strings:** use double quotes (`"..."`) or single quotes (`'...'`). Plain strings preserve backslashes. Use `e"..."` for escapes such as `\n`, or `f"...{name}..."` for interpolation.
 - **Concatenation with `+`:** when either operand is a string, the other value is converted to text.
 
 <SoplangCodeWindow title="basic_rules.sop" code={`door a = "Salaan"

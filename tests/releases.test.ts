@@ -5,9 +5,9 @@ import { latestVersion } from "../constants/latestVersion";
 import { createPlatforms } from "../constants/installData";
 
 const apiRelease: ApiRelease = {
-  tag_name: "v3.1.0", name: "Soplang v3.1.0", html_url: "https://github.com/soplang/soplang/releases/tag/v3.1.0",
+  tag_name: "v3.6.1", name: "Soplang v3.6.1", html_url: "https://github.com/soplang/soplang/releases/tag/v3.6.1",
   published_at: "2026-11-01T00:00:00Z", draft: false, prerelease: false,
-  assets: [{ name: "SHA256SUMS", browser_download_url: "https://github.com/soplang/soplang/releases/download/v3.1.0/SHA256SUMS", size: 471, download_count: 7 }],
+  assets: [{ name: "SHA256SUMS", browser_download_url: "https://github.com/soplang/soplang/releases/download/v3.6.1/SHA256SUMS", size: 471, download_count: 7 }],
 };
 
 test("stable selection rejects drafts and prereleases and retains working downloads on API failure", () => {
@@ -16,6 +16,8 @@ test("stable selection rejects drafts and prereleases and retains working downlo
     const fallback = stableRelease(unavailable);
     assert.equal(fallback.tag, latestVersion);
     assert.equal(fallback.assets.length, 6);
+    assert.ok(fallback.publishedAt);
+    assert.ok(fallback.assets.every((asset) => asset.size > 0));
     assert.ok(fallback.assets.every((asset) => asset.url.startsWith(`https://github.com/soplang/soplang/releases/download/${latestVersion}/`)));
   }
 });

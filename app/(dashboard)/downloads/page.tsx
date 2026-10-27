@@ -11,7 +11,7 @@ import Link from "next/link";
 export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Download Soplang 3 for Windows, macOS and Linux",
-  description: "Download Soplang 3 for Windows x64, macOS Apple Silicon and Linux x86_64. Get native packages, checksums, Docker commands and LLVM build requirements.",
+  description: "Download Soplang 3 for Windows x64, macOS Apple Silicon and Linux x86_64. Get native packages, checksums, Docker commands and self-contained LLVM builds.",
   alternates: { canonical: "/downloads" },
   openGraph: {
     title: "Download Soplang 3",
@@ -38,11 +38,11 @@ export default async function DownloadsPage() {
           <p className="eyebrow">{release.tag} is the latest stable release{release.publishedAt && ` · ${formatDate(release.publishedAt)}`}</p>
           <h1 className="type-title mt-5 max-w-3xl">Download Soplang 3</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A Rust compiler with Cranelift JIT for running programs and LLVM for building standalone executables. Choose the package for your system, or use Docker with the build tools included.
+            A Rust compiler with Cranelift JIT for running programs and LLVM for building standalone executables. Choose the package for your system, or use the Linux Docker image.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href={release.url} className="btn-ghost">Release notes</a>
-            <a href="https://www.somast.so/en/blog/soplang-3.0-release" className="btn-ghost">What&apos;s new in Soplang 3</a>
+            <Link href="/docs/21_soplang-3-6" className="btn-ghost">What&apos;s new in 3.6</Link>
           </div>
         </div>
       </section>
@@ -50,7 +50,7 @@ export default async function DownloadsPage() {
       <section className="section-tight" aria-labelledby="native-downloads">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <h2 id="native-downloads" className="type-section">Native packages</h2>
-          <p className="mt-4 max-w-2xl text-muted-foreground">Run files and use the REPL without installing Python, Rust or clang. Native builds have additional toolchain requirements below.</p>
+          <p className="mt-4 max-w-2xl text-muted-foreground">Run and build programs without installing Rust, Clang or a separate linker. Keep the complete package together.</p>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {platforms.map((platform) => {
               const files = release.assets.filter((asset) => platform.assetPattern.test(asset.name));
@@ -100,15 +100,15 @@ export default async function DownloadsPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2">
           <div className="min-w-0">
             <p className="eyebrow">Run</p><h2 id="run-build-heading" className="type-section mt-3">Your first program</h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground">Save <code>qor(&quot;Salaan, Adduunka!&quot;)</code> as <code>hello.sop</code>. Running a file uses Cranelift JIT. Running <code>soplang</code> without a file opens the persistent REPL.</p>
-            <CodeWindow title="Terminal" code={`soplang hello.sop\nsoplang`} />
+            <p className="mt-4 leading-relaxed text-muted-foreground">Save <code>qor(&quot;Salaan, Adduunka!&quot;)</code> as <code>hello.sop</code>. Running a file uses Cranelift JIT. Run <code>soplang isdhexgal</code> for the REPL. In a terminal, bare <code>soplang</code> opens the command browser.</p>
+            <CodeWindow title="Terminal" code={`soplang fuli hello.sop\nsoplang isdhexgal`} />
             <Link href="/docs/00_getting-started" className="font-semibold text-primary hover:underline">Getting started</Link>
           </div>
           <div className="min-w-0">
             <p className="eyebrow">Build</p><h2 className="type-section mt-3">A standalone executable</h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground"><code>--build</code> uses LLVM IR, clang 15+, a platform linker/SDK and the exact Rust compiler used for your package (Rust 1.94.0 for v3.0.1). Read <code className="break-all">lib/soplang/rustc-version.txt</code> in the package. Installed builds do not invoke Cargo.</p>
-            <CodeWindow title="Terminal" code={`soplang --build hello.sop -o hello\n./hello`} />
-            <p className="text-sm leading-relaxed text-muted-foreground">On Windows, use <code>-o hello.exe</code> and run <code>.\hello.exe</code> in PowerShell. The executable runs on its target platform without Soplang or the original source files. The Docker image includes the build toolchain.</p>
+            <p className="mt-4 leading-relaxed text-muted-foreground"><code>soplang build</code> uses the bundled LLVM compiler, linker and runtime. Installed builds need no separate Rust, Cargo, Clang or system linker. Keep <code>lib/soplang</code> beside the compiler.</p>
+            <CodeWindow title="Terminal" code={`soplang build hello.sop -o hello\n./hello`} />
+            <p className="text-sm leading-relaxed text-muted-foreground">On Windows, use <code>-o hello.exe</code> and run <code>.\hello.exe</code> in PowerShell. The executable runs on its target platform without Soplang or the original source files. The Docker image includes the same native build support.</p>
             <Link href="/docs/00_installation#building-standalone-programs" className="mt-4 inline-flex font-semibold text-primary hover:underline">Native build setup</Link>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default async function DownloadsPage() {
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-2">
           <div>
             <p className="eyebrow">Source</p><h2 id="source-heading" className="type-section mt-3">Build the release from source</h2>
-            <p className="mt-4 text-[17px] leading-relaxed text-muted-foreground">Soplang is open source under the MIT license. Install Rust through rustup, then build the tagged release. Keep the checkout and build artifacts together for native builds, or create a complete runtime package with the repository&apos;s packaging tools.</p>
+            <p className="mt-4 text-[17px] leading-relaxed text-muted-foreground">Soplang is open source under the MIT license. Install Rust and the native build dependencies described in the source build guide. The published packages already contain what is needed to build Soplang programs.</p>
             <div className="mt-6 flex flex-wrap gap-3"><a href={GITHUB_URL} className="btn-primary">View repository</a><Link href="/docs/00_installation" className="btn-ghost">Installation guide</Link></div>
           </div>
           <div className="min-w-0"><CodeWindow title="Terminal" code={`git clone --branch ${release.tag} --depth 1 https://github.com/soplang/soplang.git\ncd soplang\nrustup toolchain install 1.94.0 --profile minimal\ncargo +1.94.0 build --release\n./target/release/soplang --version`} /></div>
